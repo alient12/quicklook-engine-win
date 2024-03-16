@@ -3,8 +3,8 @@
   "WorkspaceRootPath": "C:\\Users\\AliEntezari\\source\\repos\\quicklook\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{B28091B3-81C2-44FA-9943-A0A5C3DA6C61}|quicklook\\quicklook.csproj|c:\\users\\alientezari\\source\\repos\\quicklook\\quicklook\\keyboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B28091B3-81C2-44FA-9943-A0A5C3DA6C61}|quicklook\\quicklook.csproj|solutionrelative:quicklook\\keyboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{B28091B3-81C2-44FA-9943-A0A5C3DA6C61}|quicklook\\quicklook.csproj|c:\\users\\alientezari\\source\\repos\\quicklook\\quicklook\\quicklook.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B28091B3-81C2-44FA-9943-A0A5C3DA6C61}|quicklook\\quicklook.csproj|solutionrelative:quicklook\\quicklook.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B28091B3-81C2-44FA-9943-A0A5C3DA6C61}|quicklook\\quicklook.csproj|C:\\Users\\AliEntezari\\source\\repos\\quicklook\\quicklook\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -23,12 +23,12 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "keyboard.cs",
-              "DocumentMoniker": "C:\\Users\\AliEntezari\\source\\repos\\quicklook\\quicklook\\keyboard.cs",
-              "RelativeDocumentMoniker": "quicklook\\keyboard.cs",
-              "ToolTip": "C:\\Users\\AliEntezari\\source\\repos\\quicklook\\quicklook\\keyboard.cs",
-              "RelativeToolTip": "quicklook\\keyboard.cs",
-              "ViewState": "AQIAAN4AAAAAAAAAAAAwwPwAAAA5AAAA",
+              "Title": "quicklook.cs",
+              "DocumentMoniker": "C:\\Users\\AliEntezari\\source\\repos\\quicklook\\quicklook\\quicklook.cs",
+              "RelativeDocumentMoniker": "quicklook\\quicklook.cs",
+              "ToolTip": "C:\\Users\\AliEntezari\\source\\repos\\quicklook\\quicklook\\quicklook.cs",
+              "RelativeToolTip": "quicklook\\quicklook.cs",
+              "ViewState": "AQIAAA8AAAAAAAAAAAAAABsAAAAkAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-03-14T15:49:31.194Z",
               "EditorCaption": ""
@@ -43,7 +43,8 @@
               "RelativeToolTip": "quicklook\\Program.cs",
               "ViewState": "AQIAAAIAAAAAAAAAAAAAABQAAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-03-14T14:56:14.167Z"
+              "WhenOpened": "2024-03-14T14:56:14.167Z",
+              "EditorCaption": ""
             }
           ]
         }

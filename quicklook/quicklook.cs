@@ -7,10 +7,29 @@ using System.IO;
 using SHDocVw;
 using System.Threading;
 using System.Text;
+using System.Linq;
+using System.Collections.Generic;
 
-//TODO
-// - [ ] Change the algorithm to check every 250 miliseconds when isClicked is true instead of checking arrow keys.
-// - [ ] remove the `System.Threading.Thread.Sleep(300);`
+public static class Globals
+{
+    private static string filenames = "";
+    public static bool isClicked = false;
+    
+    public static void setFilenames(string filenames)
+    {
+        if (filenames != "")
+            if (Globals.filenames != filenames)
+            {
+                Globals.filenames = filenames;
+                sendSignal();
+            }
+    }
+
+    private static void sendSignal()
+    {
+        Console.WriteLine(String.Format("Send {0}", filenames));
+    }
+}
 
 public class FocusWindow
 {
@@ -46,7 +65,7 @@ public class FocusWindow
 
 public class Desktop
 {
-    public static void CheckDesktop()
+    public static string CheckDesktop()
     {
         // we basically follow https://devblogs.microsoft.com/oldnewthing/20130318-00/?p=4933
         dynamic app = Activator.CreateInstance(Type.GetTypeFromProgID("Shell.Application"));
@@ -63,6 +82,7 @@ public class Desktop
         var browser = (IShellBrowser)sp.QueryService(SID_STopLevelBrowser, typeof(IShellBrowser).GUID);
         var view = (IFolderView)browser.QueryActiveShellView();
 
+        ArrayList selected = new ArrayList();
         view.Items(SVGIO.SVGIO_SELECTION, typeof(IShellItemArray).GUID, out var items);
         if (items is IShellItemArray array)
         {
@@ -71,10 +91,13 @@ public class Desktop
             {
                 var item = array.GetItemAt(i);
                 string itemName = item.GetDisplayName(SIGDN.SIGDN_NORMALDISPLAY);
-                Console.WriteLine(Path.Combine(desktopPath, itemName));
+                //Console.WriteLine(Path.Combine(desktopPath, itemName));
+                selected.Add(Path.Combine(desktopPath, itemName));
 
             }
         }
+        string filenames = string.Join(";", selected.Cast<string>().ToArray());
+        return filenames;
     }
 
     [Guid("6D5140C1-7436-11CE-8034-00AA006009FA"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -159,7 +182,7 @@ class MyEplorer
         window_name = FocusWindow.GetActiveWindowApplicationName();
         if (window_name == "desktop")
         {
-            Desktop.CheckDesktop();
+            Globals.setFilenames(Desktop.CheckDesktop());
         }
         else if (window_name == "explorer")
         {
@@ -175,11 +198,12 @@ class MyEplorer
                     Shell32.FolderItems items = ((Shell32.IShellFolderViewDual2)window.Document).SelectedItems();
                     foreach (Shell32.FolderItem item in items)
                     {
-                        Console.WriteLine(item.Path.ToString());
+                        //Console.WriteLine(item.Path.ToString());
                         selected.Add(item.Path);
                     }
                 }
             }
+            Globals.setFilenames(string.Join(";", selected.Cast<string>().ToArray()));
         }
     }
 }
@@ -191,9 +215,14 @@ class InterceptKeys
     private static LowLevelKeyboardProc _proc = HookCallback;
     private static IntPtr _hookID = IntPtr.Zero;
     private static bool isClicked = false;
+    
+    private static System.Timers.Timer timer = new System.Timers.Timer(250);
+
 
     public static void Start()
     {
+        timer.AutoReset = true;
+        timer.Elapsed += (sender, e) => StartSTAThread(() => MyEplorer.GetListOfSelectedFilesAndFolderOfWindowsExplorer());
         _hookID = SetHook(_proc);
         Application.Run();
         UnhookWindowsHookEx(_hookID);
@@ -217,7 +246,10 @@ class InterceptKeys
         Thread thread = new Thread(() => action());
         thread.SetApartmentState(ApartmentState.STA);
         thread.Start();
-        thread.Join();
+        bool finished = thread.Join(100);
+        if (!finished)
+            thread.Abort();
+
     }
 
     private static IntPtr HookCallback(
@@ -230,30 +262,20 @@ class InterceptKeys
             Keys key_space;
             Enum.TryParse("Space", out key_space);
 
-            if (!isClicked && (Keys)vkCode == key_space)
-            {
-                isClicked = true;
-                StartSTAThread(() => MyEplorer.GetListOfSelectedFilesAndFolderOfWindowsExplorer());
-            }
-            else if (isClicked &&  (Keys)vkCode == key_space)
-            {
-                isClicked = false;
-            }
-
-            Keys key_up, key_down, key_right, key_left;
-            Enum.TryParse("Up", out key_up);
-            Enum.TryParse("Down", out key_down);
-            Enum.TryParse("Right", out key_right);
-            Enum.TryParse("Left", out key_left);
-
-            if (isClicked)
-            {
-                if ((Keys)vkCode == key_up || (Keys)vkCode == key_down || (Keys)vkCode == key_right || (Keys)vkCode == key_left)
+            string window_name = FocusWindow.GetActiveWindowApplicationName();
+            if (window_name == "desktop" ||  window_name == "explorer")
+                if (!Globals.isClicked && (Keys)vkCode == key_space)
                 {
-                    //System.Threading.Thread.Sleep(300);
-                    StartSTAThread(() => MyEplorer.GetListOfSelectedFilesAndFolderOfWindowsExplorer());
+                    Globals.isClicked = true;
+                    //StartSTAThread(() => MyEplorer.GetListOfSelectedFilesAndFolderOfWindowsExplorer());
+                    timer.Start();
+                    //Console.WriteLine(System.Diagnostics.Process.GetCurrentProcess().Threads.Count);
                 }
-            }
+                else if (Globals.isClicked &&  (Keys)vkCode == key_space)
+                {
+                    Globals.isClicked = false;
+                    timer.Stop();
+                }
         }
         return CallNextHookEx(_hookID, nCode, wParam, lParam);
     }
