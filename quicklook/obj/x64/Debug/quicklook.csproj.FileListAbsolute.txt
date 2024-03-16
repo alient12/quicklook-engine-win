@@ -1,0 +1,10 @@
+C:\Users\AliEntezari\source\repos\quicklook\quicklook\bin\x64\Debug\quicklook.exe.config
+C:\Users\AliEntezari\source\repos\quicklook\quicklook\bin\x64\Debug\quicklook.exe
+C:\Users\AliEntezari\source\repos\quicklook\quicklook\bin\x64\Debug\quicklook.pdb
+C:\Users\AliEntezari\source\repos\quicklook\quicklook\obj\x64\Debug\quicklook.csproj.AssemblyReference.cache
+C:\Users\AliEntezari\source\repos\quicklook\quicklook\obj\x64\Debug\Interop.SHDocVw.dll
+C:\Users\AliEntezari\source\repos\quicklook\quicklook\obj\x64\Debug\Interop.Shell32.dll
+C:\Users\AliEntezari\source\repos\quicklook\quicklook\obj\x64\Debug\quicklook.csproj.ResolveComReference.cache
+C:\Users\AliEntezari\source\repos\quicklook\quicklook\obj\x64\Debug\quicklook.csproj.CoreCompileInputs.cache
+C:\Users\AliEntezari\source\repos\quicklook\quicklook\obj\x64\Debug\quicklook.exe
+C:\Users\AliEntezari\source\repos\quicklook\quicklook\obj\x64\Debug\quicklook.pdb
