@@ -8,3 +8,7 @@ C:\Users\AliEntezari\source\repos\quicklook\quicklook\obj\x64\Debug\quicklook.cs
 C:\Users\AliEntezari\source\repos\quicklook\quicklook\obj\x64\Debug\quicklook.csproj.CoreCompileInputs.cache
 C:\Users\AliEntezari\source\repos\quicklook\quicklook\obj\x64\Debug\quicklook.exe
 C:\Users\AliEntezari\source\repos\quicklook\quicklook\obj\x64\Debug\quicklook.pdb
+C:\Users\AliEntezari\source\repos\quicklook\quicklook\bin\x64\Debug\websocket-sharp-core.dll
+C:\Users\AliEntezari\source\repos\quicklook\quicklook\obj\x64\Debug\quicklook.csproj.Up2Date
+C:\Users\AliEntezari\source\repos\quicklook\quicklook\bin\x64\Debug\CommandLine.dll
+C:\Users\AliEntezari\source\repos\quicklook\quicklook\bin\x64\Debug\CommandLine.xml

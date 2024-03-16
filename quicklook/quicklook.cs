@@ -9,27 +9,40 @@ using System.Threading;
 using System.Text;
 using System.Linq;
 using System.Collections.Generic;
+using System.Net.Sockets;
+using System.Net;
+using System.Security.Cryptography;
+using System.Text.RegularExpressions;
+using WebSocketSharp.Server;
+using quicklook;
 
 public static class Globals
 {
     private static string filenames = "";
     public static bool isClicked = false;
-    
+    public static WebSocketServer server;
+    public static Dictionary<string, Server> sessions = new Dictionary<string, Server>();
+
     public static void setFilenames(string filenames)
     {
         if (filenames != "")
             if (Globals.filenames != filenames)
             {
                 Globals.filenames = filenames;
-                sendSignal();
+                SendToAll(filenames);
             }
     }
+    
 
-    private static void sendSignal()
+    public static void SendToAll(string message)
     {
-        Console.WriteLine(String.Format("Send {0}", filenames));
+        foreach (var session in sessions.Values)
+        {
+            session.SendMessage(message);
+        }
     }
 }
+
 
 public class FocusWindow
 {
@@ -42,7 +55,7 @@ public class FocusWindow
     [DllImport("user32.dll")]
     static extern int GetClassName(int hWnd, StringBuilder lpClassName, int nMaxCount);
 
-    public static string GetActiveWindowApplicationName()
+    public static (string, IntPtr) GetActiveWindowApplicationName()
     {
         IntPtr handle = GetForegroundWindow();
         GetWindowThreadProcessId(handle, out uint processID);
@@ -56,10 +69,12 @@ public class FocusWindow
             if (cName == "Progman" || cName == "WorkerW")
             {
                 // desktop is active
-                return "desktop";
+                //return "desktop";
+                return ("desktop", handle);
             }
         }
-        return proc.ProcessName;
+        //return proc.ProcessName;
+        return (proc.ProcessName, handle);
     }
 }
 
@@ -178,8 +193,7 @@ class MyEplorer
 {
     static public void GetListOfSelectedFilesAndFolderOfWindowsExplorer()
     {
-        string window_name;
-        window_name = FocusWindow.GetActiveWindowApplicationName();
+        (string window_name, IntPtr activeHandle) = FocusWindow.GetActiveWindowApplicationName();
         if (window_name == "desktop")
         {
             Globals.setFilenames(Desktop.CheckDesktop());
@@ -193,7 +207,7 @@ class MyEplorer
             foreach (SHDocVw.InternetExplorer window in new SHDocVw.ShellWindows())
             {
                 filename = Path.GetFileNameWithoutExtension(window.FullName).ToLower();
-                if (filename.ToLowerInvariant() == "explorer")
+                if (filename.ToLowerInvariant() == "explorer" && window.HWND == (int)activeHandle)
                 {
                     Shell32.FolderItems items = ((Shell32.IShellFolderViewDual2)window.Document).SelectedItems();
                     foreach (Shell32.FolderItem item in items)
@@ -214,9 +228,9 @@ class InterceptKeys
     private const int WM_KEYDOWN = 0x0100;
     private static LowLevelKeyboardProc _proc = HookCallback;
     private static IntPtr _hookID = IntPtr.Zero;
-    private static bool isClicked = false;
     
-    private static System.Timers.Timer timer = new System.Timers.Timer(250);
+    private static string keyStr = "Space";
+    public static System.Timers.Timer timer = new System.Timers.Timer(250);
 
 
     public static void Start()
@@ -260,16 +274,14 @@ class InterceptKeys
             int vkCode = Marshal.ReadInt32(lParam);
 
             Keys key_space;
-            Enum.TryParse("Space", out key_space);
+            Enum.TryParse(keyStr, out key_space);
 
-            string window_name = FocusWindow.GetActiveWindowApplicationName();
+            (string window_name, IntPtr activeHandle) = FocusWindow.GetActiveWindowApplicationName();
             if (window_name == "desktop" ||  window_name == "explorer")
                 if (!Globals.isClicked && (Keys)vkCode == key_space)
                 {
                     Globals.isClicked = true;
-                    //StartSTAThread(() => MyEplorer.GetListOfSelectedFilesAndFolderOfWindowsExplorer());
                     timer.Start();
-                    //Console.WriteLine(System.Diagnostics.Process.GetCurrentProcess().Threads.Count);
                 }
                 else if (Globals.isClicked &&  (Keys)vkCode == key_space)
                 {
@@ -295,4 +307,3 @@ class InterceptKeys
     [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
     private static extern IntPtr GetModuleHandle(string lpModuleName);
 }
-

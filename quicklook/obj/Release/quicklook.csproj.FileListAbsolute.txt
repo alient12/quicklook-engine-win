@@ -1,0 +1,14 @@
+C:\Users\AliEntezari\source\repos\quicklook\quicklook\bin\Release\quicklook.exe.config
+C:\Users\AliEntezari\source\repos\quicklook\quicklook\bin\Release\quicklook.exe
+C:\Users\AliEntezari\source\repos\quicklook\quicklook\bin\Release\quicklook.pdb
+C:\Users\AliEntezari\source\repos\quicklook\quicklook\bin\Release\CommandLine.dll
+C:\Users\AliEntezari\source\repos\quicklook\quicklook\bin\Release\websocket-sharp-core.dll
+C:\Users\AliEntezari\source\repos\quicklook\quicklook\bin\Release\CommandLine.xml
+C:\Users\AliEntezari\source\repos\quicklook\quicklook\obj\Release\quicklook.csproj.AssemblyReference.cache
+C:\Users\AliEntezari\source\repos\quicklook\quicklook\obj\Release\Interop.SHDocVw.dll
+C:\Users\AliEntezari\source\repos\quicklook\quicklook\obj\Release\Interop.Shell32.dll
+C:\Users\AliEntezari\source\repos\quicklook\quicklook\obj\Release\quicklook.csproj.ResolveComReference.cache
+C:\Users\AliEntezari\source\repos\quicklook\quicklook\obj\Release\quicklook.csproj.CoreCompileInputs.cache
+C:\Users\AliEntezari\source\repos\quicklook\quicklook\obj\Release\quicklook.csproj.Up2Date
+C:\Users\AliEntezari\source\repos\quicklook\quicklook\obj\Release\quicklook.exe
+C:\Users\AliEntezari\source\repos\quicklook\quicklook\obj\Release\quicklook.pdb
